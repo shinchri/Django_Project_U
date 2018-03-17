@@ -1,0 +1,21 @@
+<!--
+    displays the question and shows the possible answers in a form
+ -->
+<!-- django template system uses dot-lookup syntax
+    to access variable attributes
+    url -> views -> template
+    question was passed from views-->
+
+    <h1>{{ question.question_text }}</h1>
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+    <!-- to protect itself against 'Cross Site Request Forgeries' -->
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+    {% endfor %}
+    <input type="submit" value="Vote" />
+    </form>
